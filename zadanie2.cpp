@@ -2,92 +2,58 @@
 #include<stdlib.h>
 #include<cstring>
 using namespace std;
-char text[100];
 
-int S(int a, int b)
-{
-	while (a != b)
-	{
-		if (a < b)
-			b -= a;
-		else
-			a -= b;
-	}
-	return a;
-}
-
-class szyfry																	
+class Szyfr																	
 {
 public:
-	int dlugosc;
-	int przesuniecie;
+	char text[100];
+	int dlugosc, klucz;
+	int lpierwsze[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,};
 	int r1, r2, r3;
 
-	void RSA()
+	void wartoscszyfrowana()															
 	{
-		int lpierwsze[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97 };
-		srand(time(NULL));
-		int x = rand() % 24;
-
-		int p = lpierwsze[x];
-		int q = lpierwsze[x + 1];
-		int r1 = p * q;
-		int r4 = (p - 1) * (q - 1);
-		int r2 = 2;
-		int r3 = 2;
-
-
-		while (r2 < r4)
-		{
-			if (S(r2, r4) == 1)
-				break;
-			else
-				r2++;
-		}
-		while (r3 * r2 % r4 != 1)
-		{
-			r3++;
-		}
-		cout << "klucz publiczny: " << "wartosc 1: " << r1 << " wartosc 2: " << r2 << endl;
-		cout << "klucz prywatny: " << "wartosc 1: " << r1 << " wartosc 2: " << r3 << endl;
-	};
+		cout << "Podaj wiadomosc do zaszyfrowania: (maks 100)" << endl;
+		cin.getline(text, 100);
+		dlugosc = strlen(text);
+	}
 
 	void SzyfrCezar()														
 	{
-		cezar1:
 		char znak;
-		cout << "zakres przesuniecia od 0 do 26" << endl;
-		cout << "O ile przesunac: " << endl;
-		cin >> przesuniecie;
-		if (przesuniecie <= 0 || przesuniecie > 26)
+		oile:
+		cout << "O ile przesunac: ";
+		cin >> klucz;
+		if (klucz <= 0 || klucz > 26)
 		{
-			cout << "Niepoprawna liczba" <<endl;
-			goto cezar1;
+			cout << "Niepoprawna liczba " << endl;
+			goto oile;
+
 		}
 
-		for (int i = 0; i < dlugosc; i++)								
+		for (int i = 0; i < dlugosc; i++)									
 		{
 			znak = text[i];
 			if (znak >= 'a' && znak <= 'z')
 			{
-				znak = ((znak - 'a' + przesuniecie) % 26) + 'a';
+				znak = ((znak - 'a' + klucz) % 26) + 'a';
 			}
 
 			text[i] = znak;
-			printf("Zaszyfrowany tekst kodem cezara: %s \n", text);
 		}
+		printf("Zaszyfrowany tekst kodem cezara: %s \n", text);
 	}
 
 	void OdszyfrCezar()														
 	{
 		char znak;
-		cezar2:
+		przesuniecie:
 		cout << "O ile przesunac: ";
-		cin >> przesuniecie;
-		if (przesuniecie <= 0 || przesuniecie > 26)
+		cin >> klucz;
+		if (klucz <= 0 || klucz > 26)
 		{
-			cout << "Niepoprawna liczba" << endl;
-			goto cezar2;
+			cout << "Niepoprawna liczba  (od 0 do 26)"<< endl;
+			goto przesuniecie;
 		}
 
 		for (int i = 0; i < dlugosc; i++)
@@ -95,12 +61,12 @@ public:
 			znak = text[i];
 			if (znak >= 'a' && znak <= 'z')
 			{
-				znak = ((znak - 'a' + (26 - przesuniecie)) % 26) + 'a';
+				znak = ((znak - 'a' + (26 - klucz)) % 26) + 'a';
 			}
 
 			text[i] = znak;
-			printf("Odszyfrowany tekst kodem cezara: %s \n", text);
 		}
+		printf("Odszyfrowany tekst kodem cezara: %s \n", text);
 	}
 
 	void Przestawienie()													
@@ -111,57 +77,95 @@ public:
 			znak = text[i];
 			text[i] = text[i + 1];
 			text[i + 1] = znak;
-			
+
 		}
-		printf("Zaszyfrowany tekst kodem przestawiannia: %s \n", text);
+		printf("Zaszyfrowany tekst kodem przestawieniowym: %s \n", text);
 	}
 
-	
+	int wartosc(int a, int b)
+	{
+		while (a != b)
+		{
+			if (a < b)
+				b -= a;
+			else
+				a -= b;
+		}
+		return a;
+	}
+
+	void RSA()														
+	{
+		srand(time(NULL));
+		int x = rand() % 24;
+		int p = lpierwsze[x];
+		int q = lpierwsze[x + 1];
+		int r1 = p * q;
+		int r = (p - 1) * (q - 1);
+		int e = 2;
+		int d = 2;
+		while (e < r)
+		{
+			if (wartosc(e, r) == 1)
+				break;
+			else
+				e++;
+		}
+		while (d * e % r != 1)
+		{
+			d++;
+		}--
+		this->r1 = r1;
+		this->r3 = r3;
+		this->r2 = r2;
+		cout << "Publiczny RSA: " << "pierwsza wrtosc " << r1 << " " << "druga wartosc " << r2 << endl;
+		cout << "Prywatny RSA: " << "pierwsza wrtosc " << r1 << " " << "druga wartosc " << r3 << endl;
+	}
+
+
+
 };
 
 int main()
 {
 
+	Szyfr S1;
+	S1.wartoscszyfrowana();
 
-	cout << "Podaj wiadomosc do zaszyfrowania: (maks 100 znakow)" << endl;
-		cin >> text;
-	wybor:
+		wybor:
 	cout << "Jaka operacje wykonac " << endl;
-	cout << "1 - Zaszyfruj kodem cezara " << endl;
-	cout << "2 - Zaszyfruj lub odszyfruj kodem przestawieniowym " << endl;
-	cout << "3 - Zaszyfruj kodem cezara i przestawieniowym " << endl;
-	cout << "4 - Odszyfruj kodem cezara " << endl;
-	cout << "5 - Wygeneruj klucz RSA " << endl;
-
-	szyfry l1;
-	int wyboropcji;
-		cin >> wyboropcji;
-	switch (wyboropcji) {
+	cout << "1 - Zaszyfruj kodem cezara  " << endl;
+	cout << "2 - Zaszyfruj lub odszyfruj kodem przestawieniowym  " << endl;
+	cout << "3 - Zaszyfruj oboma kodami  " << endl;
+	cout << "4 - Odszyfruj kodem cezara  " << endl;
+	cout << "5 - Wygeneruj klucz RSA  " << endl;
+	cout << "6 - wylacz program" << endl;
+	int wybor;
+		cin >> wybor;
+	switch (wybor) {															
 	case 1:
-		cout << "wybrano szyfr cezara" << endl;
-		l1.SzyfrCezar();
+		S1.SzyfrCezar();
 		break;
 	case 2:
-
-		cout << "wybrano kod przestawieniowy" << endl;
-		l1.Przestawienie();
+		S1.Przestawienie();
 		break;
 	case 3:
-
-		cout << "wybrano kod przestawieniowy i szyfr cezara" << endl;
-		l1.SzyfrCezar();
-		l1.Przestawienie();
+		S1.SzyfrCezar();
+		S1.Przestawienie();
 		break;
 	case 4:
-		cout << "wybrano odszyfrowywanie cezara" << endl;
-		l1.OdszyfrCezar();
+		S1.OdszyfrCezar();
 		break;
 	case 5:
-		cout << "wybrano generacje klucza RSA" << endl;
-		l1.RSA();
+		S1.RSA();
 		break;
+	case 6:
+		return 0;
+	break;
 	default:
-		cout << "Niepoprawna opcja!  wybierz od 1 do 5" << endl;
+		cout << "Niepoprawna liczba " << endl;
+		cout << "wybierz od 1 do 5" << endl;
 		goto wybor;
+		return 0;
 	}
 }
