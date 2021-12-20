@@ -74,6 +74,7 @@ public:
 			}
 
 			text[i] = znak;
+			printf("Zaszyfrowany tekst kodem cezara: %s \n", text);
 		}
 	}
 
@@ -98,6 +99,7 @@ public:
 			}
 
 			text[i] = znak;
+			printf("Odszyfrowany tekst kodem cezara: %s \n", text);
 		}
 	}
 
@@ -109,11 +111,10 @@ public:
 			znak = text[i];
 			text[i] = text[i + 1];
 			text[i + 1] = znak;
-
+			
 		}
+		printf("Zaszyfrowany tekst kodem przestawiannia: %s \n", text);
 	}
-
-	
 
 	
 };
