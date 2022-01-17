@@ -74,14 +74,18 @@ int main()
 		switch (wybor)
 		{
 		case 1:
+			cout << "przed sortowaniem" << endl;
 			s1.losowe();
 			s1.wypisywanie();
+			cout << "po sortowaniu" << endl;
 			s1.bubble();
 			s1.wypisywanie();
 			break;
 		case 2:
+			cout << "przed sortowaniem" << endl;
 			s1.losowe();
 			s1.wypisywanie();
+			cout << "po sortowaniu" << endl;
 			s1.stawianie();
 			s1.wypisywanie();
 			break;
