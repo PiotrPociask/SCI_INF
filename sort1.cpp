@@ -71,22 +71,22 @@ int main()
 	cout << "2 = wstawianie" << endl;
 	int wybor;
 		cin >> wybor;
-	switch (wybor)
-	{
-	case 1:
-		s1.losowe();
-		s1.wypisywanie();
-		s1.bubble();
-		s1.wypisywanie();
-		break;
-	case 2:
-		s1.losowe();
-		s1.wypisywanie();
-		s1.stawianie();
-		s1.wypisywanie();
-		break;
-	default:
-		cout << "niepoprawna opcja" << endl;
-		break;
-	}
+		switch (wybor)
+		{
+		case 1:
+			s1.losowe();
+			s1.wypisywanie();
+			s1.bubble();
+			s1.wypisywanie();
+			break;
+		case 2:
+			s1.losowe();
+			s1.wypisywanie();
+			s1.stawianie();
+			s1.wypisywanie();
+			break;
+		default:
+			cout << "niepoprawna opcja" << endl;
+			break;
+		};
 }
